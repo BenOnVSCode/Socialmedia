@@ -96,7 +96,7 @@ function Post(props) {
             { props.commentPath ? null : (
                 <Input placeholder='Write a comment' onChange={(e) => settextcomment(e.target.value)} />
             )}
-            <Button onClick={props.commentPath ? null : () => dispatch(comment(props.post._id, textcomment))}>
+            <Button onClick={props.commentPath ? () => null : () => dispatch(comment(props.post._id, textcomment))}>
                 {
                     props.commentPath ? <Link style={{width: "100%"}} to={`/posts/${props.post._id}`}>Comment</Link> : "post a comment"
                 }

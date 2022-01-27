@@ -37,7 +37,7 @@ const Navbar = (props) => {
        
   return (
     <>
-    <Box width={"100vw"} bg={useColorModeValue('gray.100', 'gray.900')} px={4}>
+    <Box width={"100%"} bg={useColorModeValue('gray.100', 'gray.900')} px={4}>
       <Flex h={16} alignItems={'center'} justifyContent={'space-between'}>
         <HStack spacing={8} alignItems={'center'}>
           <Box fontWeight={"bolder"}>SM</Box>
@@ -46,7 +46,7 @@ const Navbar = (props) => {
           {
             props.home ? (
               <Button colorScheme={"teal"} size={"sm"} mr="4">
-                <Link style={{width: "100%"}} to="/"> Home</Link>
+                <Link to="/"> Home</Link>
               </Button>
             ) : (
               <Button
