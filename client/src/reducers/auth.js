@@ -15,7 +15,6 @@ export default (state = initialState, action) => {
                 loading: true
             }
         case "LOGIN_SUCCESS":
-            console.log('logged in ')
             return {
                 ...state,
                 loading: false,
