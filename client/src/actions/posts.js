@@ -39,7 +39,7 @@ export const addApost = (title, descreption) => async (dispatch) => {
         swal(data.message, "", "success")
     } catch(error) {
         dispatch({type: 'POST_NOT_ADDED', payload: 'Somthing went wrong'})
-        if(error) swal("Somthing went wrong", "", "error")
+        swal(error.response.data.message, "", "error")
     }
 }
 export const getonepost = (id) => async (dispatch) => {

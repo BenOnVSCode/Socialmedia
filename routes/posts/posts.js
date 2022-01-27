@@ -49,7 +49,7 @@ router.post('/user/posts', auth,  async (req, res) => {
             }
             user.posts.push(newPost)
             user.save() 
-            res.json({posts: user.posts}) 
+            res.json({posts: user.posts, message: 'Posted!'}) 
         } catch (error) {
             res.status(404).json({message: "Somthing went wrong try again"})
         }
