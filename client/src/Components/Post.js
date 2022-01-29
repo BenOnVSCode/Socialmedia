@@ -96,11 +96,18 @@ function Post(props) {
             { props.commentPath ? null : (
                 <Input placeholder='Write a comment' onChange={(e) => settextcomment(e.target.value)} />
             )}
-            <Button onClick={props.commentPath ? () => null : () => dispatch(comment(props.post._id, textcomment))}>
-                {
-                    props.commentPath ? <Link style={{width: "100%"}} to={`/posts/${props.post._id}`}>Comment</Link> : "post a comment"
-                }
-            </Button>
+            {
+              props.commentPath ? (
+                <Link style={{width: "100%"}} to={`/posts/${props.post._id}`}>
+                  <Button width={"100%"}>
+                    Comment
+                  </Button>
+                </Link>
+              ) : (
+                <Button onClick={()=> dispatch(comment(props.post._id, textcomment))}>Post a comment</Button>
+              )
+            } 
+            
             {
                 props.delete ? <Button colorScheme={"teal"} onClick={() => dispatch(deleteapost(props.post._id))}>Delete</Button> : " "
             }
