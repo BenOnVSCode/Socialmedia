@@ -1,3 +1,4 @@
+
 import {
     Flex,
     Box,
@@ -9,11 +10,15 @@ import {
     Heading,
     Text,
     useColorModeValue,
+    Center,
   } from '@chakra-ui/react';
+  import { GoogleLogin } from 'react-google-login'
+
 import React from 'react';
 import { Link } from 'react-router-dom'
 import { useDispatch } from 'react-redux';
-import { LoginToAccount } from '../actions/auth';
+import { LoginToAccount, LoginToAccountGoogle } from '../actions/auth';
+import { FcGoogle } from 'react-icons/fc';
 const Login = () => {
     const [show, setShow] = React.useState(false)
     const dispatch = useDispatch()
@@ -22,6 +27,10 @@ const Login = () => {
     const [password, setpassword] = React.useState(null)
     const Login = () => {
         dispatch(LoginToAccount(username, password))
+    }
+    const responseGoogle = async(response) => {
+      const token = await response.tokenId ;
+      dispatch(LoginToAccountGoogle(token))
     }
   return (
     <Flex
@@ -48,6 +57,7 @@ const Login = () => {
             <Input onChange={(e) => setpassword(e.target.value)}  type="password" />
           </FormControl>
           <Stack spacing={10}>
+          
             <Button
               bg={'blue.400'}
               color={'white'}
@@ -59,6 +69,29 @@ const Login = () => {
               Sign in
             </Button>
           </Stack>
+          <Stack>
+          <GoogleLogin
+            clientId="1051253608581-t6spbonqcpcipoceb8tr57g5g4rvdmh0.apps.googleusercontent.com"
+            render={renderProps => (
+              <Button
+              onClick={renderProps.onClick} disabled={renderProps.disabled}
+              w={'full'}
+              maxW={'md'}
+              variant={'outline'}
+              leftIcon={<FcGoogle />}>
+              <Center>
+                <Text>Sign in with Google</Text>
+              </Center>
+            </Button>
+              
+            )}
+            buttonText="Login"
+            onSuccess={responseGoogle}
+            onFailure={responseGoogle}
+            cookiePolicy={'single_host_origin'}
+          />
+            
+          </Stack>
           <Stack spacing={10}>
             <Text align={'center'}>
                 Do not have an account ? <Link to='/register' style={{color: "#4299E1"}}>Register</Link>
@@ -67,6 +100,7 @@ const Login = () => {
         </Stack>
       </Box>
     </Stack>
+    
   </Flex>
   )
 };

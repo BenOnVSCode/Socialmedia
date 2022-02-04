@@ -11,7 +11,7 @@ const cookieParser = require('cookie-parser');
 const logout = require('./auth/logout');
 const path = require('path')
 const reactions = require('./routes/posts/reactions');
-
+const google = require('./auth/google')
 
 app.use(cors({
     origin: "http://localhost:3000",
@@ -19,12 +19,12 @@ app.use(cors({
 }));
 app.use(express.json());
 app.use(cookieParser())
-app.use('/', login);
-app.use('/', register);
-app.use('/', logout);
-
-app.use('/', posts)
-app.use('/', reactions)
+app.use('/api/', login);
+app.use('/api/', register);
+app.use('/api/', logout);
+app.use('/api/', google)
+app.use('/api/', posts)
+app.use('/api/', reactions)
 
 
 

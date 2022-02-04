@@ -32,3 +32,15 @@ export const AuthCheck = () => async(dispatch) => {
         dispatch({type: "LOGIN_ERROR"})
     }
 }
+
+export const LoginToAccountGoogle = (token) => async(dispatch) => {
+    try {
+        dispatch({type: "LOADING"})
+        const { data } = await api.loginwithgoogle(token)
+        console.log('finish')
+        dispatch({type: "LOGIN_SUCCESS", payload: data})
+    } catch (error) {
+        dispatch({type: "LOGIN_ERROR"})
+        swal(error.response.data.msg, "", "error")
+    }
+}
