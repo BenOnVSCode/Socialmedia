@@ -17,22 +17,32 @@ import {
     ModalBody,
     ModalCloseButton,
     Textarea,
+    Text,
 } from '@chakra-ui/react';   
 import { AddIcon } from '@chakra-ui/icons';
 import { addApost } from '../actions/posts';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom'
+import { FileBtn, FileWrap, PostImage } from './style/File';
 const Navbar = (props) => {
     const { isOpen, onOpen, onClose } = useDisclosure()
     const initialRef = React.useRef()
     const [title, setitle] = React.useState()
     const [descreption, setdescreption] = React.useState()
+    const [file, setfile] = React.useState(null)
     const finalRef = React.useRef()
     const dispatch = useDispatch()
 
     const close = () => {
       dispatch(addApost(title, descreption))
       setTimeout(onClose, 1000)
+    }
+    const getBase64 = (file) => {
+      const reader = new FileReader()
+      reader.onloadend = () => {
+        setfile(reader.result)
+      }
+      reader.readAsDataURL(file)
     }
        
   return (
@@ -89,6 +99,19 @@ const Navbar = (props) => {
               <FormLabel>Descreption</FormLabel>
               <Textarea onChange={(e) => setdescreption(e.target.value)} placeholder='Your post descreption' />
             </FormControl>
+            <FormControl>
+              {
+                file ? (
+                  <PostImage src={file} />
+                ) : (
+                  <FileWrap>
+                    <Text position="absolute">Image</Text>
+                    <FileBtn type="file" onChange={(e) => getBase64(e.target.files[0])} accept="image/*" />
+                  </FileWrap>
+                )
+              }
+            </FormControl>
+            
           </ModalBody>
 
           <ModalFooter>
