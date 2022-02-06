@@ -17,12 +17,14 @@ import {
     Tfoot,
     Tbody,
     Input,
+    Image,
   } from '@chakra-ui/react';
 import { AiFillLike, AiFillDislike } from 'react-icons/ai'
 import { comment, like, unlike } from '../actions/reactions';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom'
 import { deleteapost } from '../actions/posts';
+import { PostImage } from './style/File';
 function Post(props) {
     const dispatch = useDispatch()
     const [textcomment, settextcomment] = useState('')
@@ -55,6 +57,9 @@ function Post(props) {
         <Text color={'gray.500'}>
           {props.post.descreption}
         </Text>
+        {
+          props.post.img ? <Image objectFit="scale-down" borderRadius="5px" src={props.post.img}/> : null
+        }
       </Stack>
       <Stack marginBottom={"1rem"} mt={6} direction={'row'} spacing={4} align={'center'}>
         <Stack direction={'column'} spacing={0} fontSize={'sm'}>

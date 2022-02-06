@@ -23,7 +23,7 @@ import { AddIcon } from '@chakra-ui/icons';
 import { addApost } from '../actions/posts';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom'
-import { FileBtn, FileWrap, PostImage } from './style/File';
+import { FileBtn, FileWrap, PostImage, PostImageContainer, RemovePostImgae } from './style/File';
 const Navbar = (props) => {
     const { isOpen, onOpen, onClose } = useDisclosure()
     const initialRef = React.useRef()
@@ -34,7 +34,8 @@ const Navbar = (props) => {
     const dispatch = useDispatch()
 
     const close = () => {
-      dispatch(addApost(title, descreption))
+      dispatch(addApost(title, descreption, file))
+      setfile(null)
       setTimeout(onClose, 1000)
     }
     const getBase64 = (file) => {
@@ -102,7 +103,10 @@ const Navbar = (props) => {
             <FormControl>
               {
                 file ? (
-                  <PostImage src={file} />
+                  <PostImageContainer>
+                    <PostImage src={file} />
+                    <RemovePostImgae onClick={() => setfile(null)} />
+                  </PostImageContainer>
                 ) : (
                   <FileWrap>
                     <Text position="absolute">Image</Text>

@@ -12,11 +12,16 @@ const logout = require('./auth/logout');
 const path = require('path')
 const reactions = require('./routes/posts/reactions');
 const google = require('./auth/google')
-
+const bodyParser = require('body-parser')
 app.use(cors({
     origin: "http://localhost:3000",
     credentials: true
 }));
+app.use(bodyParser.json({
+    limit: '50mb'
+}));
+
+  
 app.use(express.json());
 app.use(cookieParser())
 app.use('/api/', login);

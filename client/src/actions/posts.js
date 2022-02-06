@@ -31,9 +31,9 @@ export const deleteapost = (id) => async (dispatch) => {
     }
 }
 
-export const addApost = (title, descreption) => async (dispatch) => {
+export const addApost = (title, descreption, img) => async (dispatch) => {
     try {
-        const { data } = await api.addPost(title, descreption);
+        const { data } = await api.addPost(title, descreption, img);
         dispatch({type: 'POST_ADDED', payload: data})
         dispatch(getPosts())
         swal(data.message, "", "success")

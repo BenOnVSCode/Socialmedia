@@ -26,9 +26,10 @@ const Register = () => {
     const [name, setname] = useState(null)
     const [username, setusername] = useState(null)
     const [password, setpassword] = useState(null)
+    const [email, setemail] = useState(null)
     const [showPassword, setShowPassword] = useState(false);
     const Register = () => {
-        dispatch(RegisterAccount(name, username, password))
+        dispatch(RegisterAccount(name, username, email, password))
     }
     return (
         <Flex
@@ -55,9 +56,13 @@ const Register = () => {
                     <Input onChange={(e) => setname(e.target.value)} type="text" />
                   </FormControl>
             
-              <FormControl id="email" isRequired>
+              <FormControl id="username" isRequired>
                 <FormLabel>Username</FormLabel>
                 <Input onChange={(e) => setusername(e.target.value) } type="username" />
+              </FormControl>
+              <FormControl id="email" isRequired>
+                <FormLabel>Email</FormLabel>
+                <Input onChange={(e) => setemail(e.target.value) } type="email" />
               </FormControl>
               <FormControl id="password" isRequired>
                 <FormLabel>Password</FormLabel>

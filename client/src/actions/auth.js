@@ -11,15 +11,16 @@ export const LoginToAccount = (username, password) => async(dispatch) => {
     }
 }
 
-export const RegisterAccount = (name, username, password) => async(dispatch) => {
+export const RegisterAccount = (name, username, email, password) => async(dispatch) => {
     try {
         dispatch({type: "LOADING"})
-        const { data } = await api.register(name, username, password)
+        const { data } = await api.register(name, username,email, password)
         dispatch({type: "REGISTER_SUCCESS"})
         swal(data.message, "", "success")
-    } catch (error) {
+    } catch(error) {
         dispatch({type: "REGISTER_ERROR"})
         swal(error.response.data.message, "", "error")
+       
     }
 }
 

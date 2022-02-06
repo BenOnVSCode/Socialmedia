@@ -31,11 +31,11 @@ router.get('/user/posts', auth,  async (req, res) => {
 
 //POST A NEW POST :-:
 router.post('/user/posts', auth,  async (req, res) => {
-    const { descreption, title } = await req.body 
+    const { descreption, title, img } = await req.body 
     if(!descreption || descreption.length === 0 || !title || title.length < 2) res.status(404).json({message: 'Descreption and title cannot be empty'})
     else {
         try {
-            const id = getId(req.headers.cookie.split('=')[1])
+            const id = getId(req.cookies.socialtoken)
             const user = await User.findById(id)
             const newPost = {
                 poster: user.id,
@@ -43,6 +43,7 @@ router.post('/user/posts', auth,  async (req, res) => {
                 title: title,
                 username: user.username,
                 name: user.name,
+                img: img,
                 date: `${new Date().getDay()}/${new Date().getMonth()}/${new Date().getFullYear()} time: ${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()}`,
                 likes: [],
                 comments: [],

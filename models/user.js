@@ -26,6 +26,7 @@ const UserSchema = new Schema({
         title: String,
         username: String,
         name: String,
+        img: String,
         date: String,
         likes: [String],
         comments: [Object],
