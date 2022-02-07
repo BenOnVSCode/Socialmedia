@@ -28,6 +28,9 @@ import { PostImage } from './style/File';
 function Post(props) {
     const dispatch = useDispatch()
     const [textcomment, settextcomment] = useState('')
+
+
+    
   return (
     <Center py={6}  width={props.width || "300px"} margin={"1rem"}>
     <Box
@@ -69,7 +72,7 @@ function Post(props) {
       </Stack>
         <Stack>
             {
-                props.licked ? <AiFillDislike cursor={"pointer"} fill='#2d3748' fontSize={"2rem"} onClick={() =>dispatch(unlike(props.post._id))}/> : <AiFillLike cursor="pointer" onClick={() => dispatch(like(props.post._id))} fill='#2d3748' fontSize={"2rem"} />
+                props.licked ? <AiFillDislike cursor={"pointer"} fill='#2d3748' fontSize={"2rem"} onClick={() => dispatch(unlike(props.post._id, props.post.username))}/> : <AiFillLike cursor="pointer" onClick={() => dispatch(like(props.post._id, props.post.username))} fill='#2d3748' fontSize={"2rem"} />
             }
             {
                 props.commentPath ? (null) : (

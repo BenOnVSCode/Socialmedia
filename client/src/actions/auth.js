@@ -38,10 +38,19 @@ export const LoginToAccountGoogle = (token) => async(dispatch) => {
     try {
         dispatch({type: "LOADING"})
         const { data } = await api.loginwithgoogle(token)
-        console.log('finish')
         dispatch({type: "LOGIN_SUCCESS", payload: data})
     } catch (error) {
         dispatch({type: "LOGIN_ERROR"})
         swal(error.response.data.msg, "", "error")
+    }
+}
+
+export const Logout = () => async (dispatch) => {
+    try {
+        const { data } = await api.logout()
+        dispatch({type: "LOGOUT"})
+    } catch (error) {
+        dispatch({type: "LOGOUT_ERROR"})
+        swal("somthing went wrong", "", "error")
     }
 }

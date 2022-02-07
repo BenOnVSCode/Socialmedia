@@ -9,6 +9,14 @@ let initialState = {
 
 export default (state = initialState, action) => {
     switch(action.type){
+        case "LOGOUT":
+            window.location.replace('/')
+            return {
+                ...state,
+                loggedIn: false,
+                name: null,
+                username: null
+            }
         case "LOADING":
             return {
                 ...state,

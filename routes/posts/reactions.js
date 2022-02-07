@@ -18,71 +18,43 @@ const getId = (token) => {
 
 //like a post :<3
 router.put('/posts/:id/likes', auth, async (req, res) => {
-    const token = req.cookies.socialtoken;
-    const id = await getId(token);
-    const liker = await User.findById(id)
-    const users = await User.find()
-    const posts = users.map(user => {
-        return user.posts
-    })
-    const newposts = []
-    for(i = 0 ; i < posts.length ; i++) {
-        for(j=0; j<posts[i].length; j++) {
-            newposts.push(posts[i][j])
-        }
+    try {
+        const token = req.cookies.socialtoken;
+        const postID = req.params.id
+        const id = await getId(token);
+        const liker = await User.findById(id)
+        const user = await User.findOne({username: req.body.username})
+        await user.posts.map(post => {
+            if(post._id.toString() === postID){
+                post.likes = [...post.likes, liker.username]
+            }
+        })
+        await user.save()
+        res.status(200).json('liked')
+    } catch (error) {
+        res.status(500).json('Somthing went wrong!')
     }
-    const post = newposts.filter(post => {
-        return post.id === req.params.id
-    })
-    const user = await User.findById(post[0].poster)
-    const newPost = await user.posts.filter(post => {
-        return post.id === req.params.id
-    })
-    await newPost[0].likes.push(liker.username)
-    newPost[0].likes = [...new Set(newPost[0].likes)];
-    if(liker.likedPosts.indexOf(req.params.id) < 0) {
-        liker.likedPosts.push(req.params.id)
-    }
-    await user.save()
-    await liker.save()
-    res.json(newPost[0])
 })
 
 
 //unlike a post 
 router.delete('/posts/:id/likes', auth, async (req, res) => {
-
-    const token = req.cookies.socialtoken;
-    const id = await getId(token);
-    const unliker = await User.findById(id)
-    const users = await User.find()
-    const posts = users.map(user => {
-        return user.posts
-    })
-    const newposts = []
-    for(i = 0 ; i < posts.length ; i++) {
-        for(j=0; j<posts[i].length; j++) {
-            newposts.push(posts[i][j])
-        }
+    try {
+        const token = req.cookies.socialtoken;
+        const id = await getId(token);
+        const unliker = await User.findById(id)
+        const user = await User.findOne({username: req.body.username})
+        await user.posts.map((post) => {
+            if(post._id.toString() === req.params.id){
+                post.likes.splice(post.likes[post.likes.indexOf(unliker.username)], 1)
+            }
+        })
+        await user.save()
+        res.status(200).json('Unlicked?')
+    } catch(error) {
+        res.status(500).json("Somthing went wrong ?")
+        console.log(error)
     }
-    const post = newposts.filter(post => {
-        return post.id === req.params.id
-    })
-    const user = await User.findById(post[0].poster)
-    const newPost = await user.posts.filter(post => {
-        return post.id === req.params.id
-    })
-    const index2 =  unliker.likedPosts.indexOf(req.params.id)
-    const index = newPost[0].likes.indexOf(unliker.username);
-    if (index > -1) {
-        newPost[0].likes.splice(index, 1);
-    }
-    if (index2 > -1) {
-        unliker.likedPosts.splice(index2, 1);   
-    }
-    await unliker.save()
-    await user.save()
-    res.json(newPost[0])
     
 })
 

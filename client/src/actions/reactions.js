@@ -10,9 +10,9 @@ export const comment = (postID,  comment) => async (dispatch) => {
     }
 }
 
-export const like = (id) => async (dispatch) => {
+export const like = (id, username) => async (dispatch) => {
     try {
-        const { data } = await api.like(id)
+        const { data } = await api.like(id, username)
         dispatch({ type: 'LIKE_SUCCESS', payload: data})
         dispatch(getPosts())
     } catch (error) {
@@ -20,10 +20,9 @@ export const like = (id) => async (dispatch) => {
     }
 }
 
-export const unlike = (id) => async (dispatch) => {
+export const unlike = (id, username) => async (dispatch) => {
     try {
-        console.log(id)
-        const { data } = await api.unlike(id)
+        const { data } = await api.unlike(id, username)
         dispatch({ type: 'UNLIKE_SUCCESS', payload: data})
         dispatch(getPosts())
     } catch (error) {

@@ -7,77 +7,78 @@ let initialState = {
     commentMessage: '',
     post: []
 }
-export default (posts = initialState, action) => {
+export default (postsState = initialState, action) => {
     switch (action.type) {
         case 'FETCH_ALL':
             return {
-                ...posts,
+                ...postsState,
                 posts: action.payload
             }
         case 'FETCH_MY_POSTS_SUCCESS':
             return {
-                ...posts,
+                ...postsState,
                 myposts: action.payload.posts,
                 username: action.payload.username
             }
         case 'POST_DELETED':
             return {
-                ...posts,
+                ...postsState,
                 myposts: action.payload.posts
             }
         case 'POST_ADDED':
             return {
-                ...posts,
+                ...postsState,
+                posts: [...postsState.posts, action.payload.post],
                 myposts : action.payload.posts
             }
             
         case 'POST_NOT_ADDED':
             return {
-                ...posts
+                ...postsState
             }
         case 'COMMENT_SUCCESS':
             return {
-                ...posts,
+                ...postsState,
                 post: action.payload
             }
         case 'COMMENT_ERROR':
             return {
-                ...posts
+                ...postsState
             }
         case 'LIKE_SUCCESS':
-            if(posts.post._id === action.payload._id) {
+            if(postsState.post._id === action.payload._id) {
                 return {
-                    ...posts,
+                    ...postsState,
                     post: action.payload
                 }
             }
             
         case 'LIKE_ERROR':
             return {
-                ...posts
+                ...postsState
             }
         case 'UNLIKE_SUCCESS':
-            if(posts.post._id === action.payload._id) {
+            if(postsState.post._id === action.payload._id) {
                 return {
-                    ...posts,
+                    ...postsState,
                     post: action.payload
                 }
             }
             else {
                 return {
-                    ...posts
+                    ...postsState
                 }
             }
         case 'UNLIKE_ERROR':
-            return {...posts}
+            return {...postsState}
         case 'GET_POST_SUCCESS':
             return {
-                ...posts,
+                ...postsState,
                 post: action.payload[0]
             }
         case 'GET_POST_ERROR':
-            return {...posts}
+            return {...postsState}
         default:
-            return posts ;
+            return postsState ;
     }
 } 

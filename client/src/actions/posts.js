@@ -5,6 +5,7 @@ import swal from 'sweetalert'
 
 export const getPosts = () => async (dispatch) => {
     try {
+        
         const { data } = await api.fetchPosts();
         dispatch({ type: 'FETCH_ALL', payload: data})
     } catch(error) {
@@ -35,11 +36,9 @@ export const addApost = (title, descreption, img) => async (dispatch) => {
     try {
         const { data } = await api.addPost(title, descreption, img);
         dispatch({type: 'POST_ADDED', payload: data})
-        dispatch(getPosts())
         swal(data.message, "", "success")
     } catch(error) {
         dispatch({type: 'POST_NOT_ADDED', payload: 'Somthing went wrong'})
-        swal(error.response.data.message, "", "error")
     }
 }
 export const getonepost = (id) => async (dispatch) => {

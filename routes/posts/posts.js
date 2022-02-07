@@ -44,19 +44,20 @@ router.post('/user/posts', auth,  async (req, res) => {
                 username: user.username,
                 name: user.name,
                 img: img,
-                date: `${new Date().getDay()}/${new Date().getMonth()}/${new Date().getFullYear()} time: ${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()}`,
+                date: new Date().toLocaleDateString('en-us', { weekday:"long", year:"numeric", month:"short", day:"numeric"}),
                 likes: [],
                 comments: [],
             }
-            user.posts.push(newPost)
-            user.save() 
-            res.json({posts: user.posts, message: 'Posted!'}) 
+            await user.posts.push(newPost)
+            await user.save() 
+            res.json({posts: user.posts, post: newPost, message: 'Posted!'}) 
         } catch (error) {
             res.status(404).json({message: "Somthing went wrong try again"})
         }
         
     }   
 })
+
 
 
 //DELETE a post -_- 
@@ -107,8 +108,14 @@ router.get('/posts', auth, async (req, res) => {
     const users = await User.find()
     const posts = users.map(user => {
         return user.posts
+    })  
+    let newposts = []
+    posts.map(userposts => {
+        userposts.map(post => {
+            newposts.push(post)
+        })
     })
-    res.json(posts)
+    res.json(newposts)
 })
 
 

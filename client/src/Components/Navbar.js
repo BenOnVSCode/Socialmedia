@@ -20,10 +20,11 @@ import {
     Text,
 } from '@chakra-ui/react';   
 import { AddIcon } from '@chakra-ui/icons';
-import { addApost } from '../actions/posts';
+import { addApost, getPosts } from '../actions/posts';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom'
 import { FileBtn, FileWrap, PostImage, PostImageContainer, RemovePostImgae } from './style/File';
+import { Logout } from '../actions/auth';
 const Navbar = (props) => {
     const { isOpen, onOpen, onClose } = useDisclosure()
     const initialRef = React.useRef()
@@ -35,8 +36,11 @@ const Navbar = (props) => {
 
     const close = () => {
       dispatch(addApost(title, descreption, file))
-      setfile(null)
-      setTimeout(onClose, 1000)
+      setTimeout(() => {
+        onClose()
+        setfile(null)
+      }, 1000)
+      
     }
     const getBase64 = (file) => {
       const reader = new FileReader()
@@ -54,6 +58,19 @@ const Navbar = (props) => {
           <Box fontWeight={"bolder"}>SM</Box>
         </HStack>
         <Flex alignItems={'center'}>
+          {
+            props.homebtn ? (
+              <Button
+            variant={'solid'}
+            colorScheme={'teal'}
+            size={'sm'}
+            mr={2}
+            onClick={() => dispatch(Logout())}
+            >
+            Logout
+          </Button>
+            ) : null
+          }
           {
             props.home ? (
               <Button colorScheme={"teal"} size={"sm"} mr="4">

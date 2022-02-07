@@ -10,16 +10,10 @@ function Posts() {
         dispatch(getPosts())
     }, [])
     const posts = useSelector(state => state.posts.posts);
-    let newPosts = [] ;
-    for (let i = 0; i < posts.length; i++) {
-        for (let z = 0; z < posts[i].length; z++ ) {
-            newPosts.push(posts[i][z])
-        }
-    }
-    return (
+    return ( 
         <Flex flexDirection={"row"} flexWrap={"wrap"} justifyContent={"center"}>
         {
-            newPosts.map((post, index) => (
+            posts.map((post, index) => (
                 <Post commentPath={true} key={index} licked={
                     post.likes.indexOf(username) !== -1 ? (
                         true   
