@@ -20,11 +20,11 @@ import {
     Text,
 } from '@chakra-ui/react';   
 import { AddIcon } from '@chakra-ui/icons';
-import { addApost, getPosts } from '../actions/posts';
+import { addApost, getPosts } from '../redux/actions/posts';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom'
 import { FileBtn, FileWrap, PostImage, PostImageContainer, RemovePostImgae } from './style/File';
-import { Logout } from '../actions/auth';
+import { Logout } from '../redux/actions/auth';
 const Navbar = (props) => {
     const { isOpen, onOpen, onClose } = useDisclosure()
     const initialRef = React.useRef()
@@ -35,7 +35,7 @@ const Navbar = (props) => {
     const dispatch = useDispatch()
 
     const close = () => {
-      dispatch(addApost(title, descreption, file))
+      dispatch(addApost({title, descreption, file}))
       setTimeout(() => {
         onClose()
         setfile(null)
@@ -89,10 +89,11 @@ const Navbar = (props) => {
           </Button>
             )
           }
-          <Button colorScheme={"blackAlpha"} variant={'solid'}
+          <Button as={Link} colorScheme={"blackAlpha"} variant={'solid'}
             size={'sm'}
+            to={props.homebtn ? "/" : "/profile"}
             mr={4}>
-              <Link style={{width: "100%"}} to={props.homebtn ? "/" : "/profile"}>{props.homebtn ? "Home" : "Profile"}</Link>
+              {props.homebtn ? "Home" : "Profile"}
           </Button>
         </Flex>
       </Flex>

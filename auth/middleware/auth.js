@@ -1,10 +1,9 @@
-const jwt = require('jsonwebtoken');
-
+import jwt from "jsonwebtoken"
 
 
 
 const auth = (req, res, next) => {
-    const token = req.cookies.socialtoken
+    const token = req.cookies[process.env.COOKIE_NAME]
     if(!token) return res.status(401).json({ msg: 'No token, auth denided'});
     try {
         const decoded = jwt.verify(token , process.env.JWT_KEY);
@@ -16,4 +15,4 @@ const auth = (req, res, next) => {
 }
 
 
-module.exports = auth
+export default auth

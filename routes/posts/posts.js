@@ -1,11 +1,10 @@
-require('dotenv').config()
-const express = require('express');
-const router = express.Router();
-const User = require('../../models/user');
-const auth = require('../../auth/middleware/auth');
-const jwt = require('jsonwebtoken')
-const uuid = require('uuid');
 
+import {Router} from "express"
+import User from '../../models/user.js'
+import auth from '../../auth/middleware/auth.js'
+import jwt from 'jsonwebtoken'
+
+const router = Router();
 
 
 const getId = (token) => {
@@ -14,28 +13,28 @@ const getId = (token) => {
     return id
 }
 
-//----------------------------->>
-
-//GET USER POSTS <:3
-router.get('/user/posts', auth,  async (req, res) => {
-    const token = req.cookies.socialtoken
-    const id = getId(token)
-    const { posts } = await User.findById(id)
-    const user = await User.findById(id)
-    res.status(200).json({
-        posts: posts,
-        username: user.username
-    })
+router.get('/myposts', auth, async (req, res) => {
+    try {
+        const token = req.cookies[process.env.COOKIE_NAME]
+        const id = getId(token)
+        const user = await User.findById(id)
+        res.status(200).json({
+            posts: user.posts,
+            username: user.username
+        })
+    } catch (error) {
+        res.status(500).json("Something went wrong")
+    }
 });
 
 
-//POST A NEW POST :-:
+
 router.post('/user/posts', auth,  async (req, res) => {
-    const { descreption, title, img } = await req.body 
+    const { descreption, title, img } = req.body 
     if(!descreption || descreption.length === 0 || !title || title.length < 2) res.status(404).json({message: 'Descreption and title cannot be empty'})
     else {
         try {
-            const id = getId(req.cookies.socialtoken)
+            const id = getId(req.cookies[process.env.COOKIE_NAME])
             const user = await User.findById(id)
             const newPost = {
                 poster: user.id,
@@ -52,7 +51,7 @@ router.post('/user/posts', auth,  async (req, res) => {
             await user.save() 
             res.json({posts: user.posts, post: newPost, message: 'Posted!'}) 
         } catch (error) {
-            res.status(404).json({message: "Somthing went wrong try again"})
+            res.status(500).json({message: "Somthing went wrong try again"})
         }
         
     }   
@@ -86,8 +85,8 @@ router.get('/posts/:id', auth, async (req, res) => {
             return user.posts
         })
         const newposts = []
-        for(i = 0 ; i < posts.length ; i++) {
-            for(j=0; j<posts[i].length; j++) {
+        for(let i = 0 ; i < posts.length ; i++) {
+            for(let j=0; j<posts[i].length; j++) {
                 newposts.push(posts[i][j])
             }
         }
@@ -95,7 +94,7 @@ router.get('/posts/:id', auth, async (req, res) => {
             return post.id === req.params.id
         })
 
-        res.json(post)
+        res.status(200).json(post)
     } catch (error) {
         res.status(500).json({message: 'Somthing went wrong'})
     }
@@ -105,19 +104,23 @@ router.get('/posts/:id', auth, async (req, res) => {
 
 //GET all posts 
 router.get('/posts', auth, async (req, res) => {
-    const users = await User.find()
-    const posts = users.map(user => {
-        return user.posts
-    })  
-    let newposts = []
-    posts.map(userposts => {
-        userposts.map(post => {
-            newposts.push(post)
+    try {
+        const users = await User.find()
+        const posts = users.map(user => {
+            return user.posts
+        })  
+        let newposts = []
+        posts.map(userposts => {
+            userposts.map(post => {
+                newposts.push(post)
+            })
         })
-    })
-    res.json(newposts)
+        res.status(200).json(newposts)
+    } catch (error) {
+       
+    }
 })
 
 
 
-module.exports = router 
+export default router

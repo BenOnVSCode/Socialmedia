@@ -20,15 +20,15 @@ import {
     Image,
   } from '@chakra-ui/react';
 import { AiFillLike, AiFillDislike } from 'react-icons/ai'
-import { comment, like, unlike } from '../actions/reactions';
-import { useDispatch } from 'react-redux';
+import { comment, like, unlike } from '../redux/actions/posts';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom'
-import { deleteapost } from '../actions/posts';
-import { PostImage } from './style/File';
+import { deleteapost } from '../redux/actions/posts';
+
 function Post(props) {
     const dispatch = useDispatch()
     const [textcomment, settextcomment] = useState('')
-
+    const { username } = useSelector(state => state.auth)
 
     
   return (
@@ -72,7 +72,7 @@ function Post(props) {
       </Stack>
         <Stack>
             {
-                props.licked ? <AiFillDislike cursor={"pointer"} fill='#2d3748' fontSize={"2rem"} onClick={() => dispatch(unlike(props.post._id, props.post.username))}/> : <AiFillLike cursor="pointer" onClick={() => dispatch(like(props.post._id, props.post.username))} fill='#2d3748' fontSize={"2rem"} />
+                props.licked ? <AiFillDislike cursor={"pointer"} fill='#2d3748' fontSize={"2rem"} onClick={() => dispatch(unlike({postID: props.post._id, username: props.post.username}))}/> : <AiFillLike cursor="pointer" onClick={() => dispatch(like({postID: props.post._id, username: props.post.username}))} fill='#2d3748' fontSize={"2rem"} />
             }
             {
                 props.commentPath ? (null) : (
@@ -87,7 +87,7 @@ function Post(props) {
                         <Tbody>
                         {
                             props.post.comments.map((comment, index) => (
-                               <Tr>
+                               <Tr key={index}>
                                    <Td>{comment.user}</Td>
                                    <Td>{comment.descreption}</Td>
                                </Tr> 
@@ -112,7 +112,7 @@ function Post(props) {
                   </Button>
                 </Link>
               ) : (
-                <Button onClick={()=> dispatch(comment(props.post._id, textcomment))}>Post a comment</Button>
+                <Button onClick={()=> dispatch(comment({postID: props.post._id, comment:textcomment}))}>Post a comment</Button>
               )
             } 
             
