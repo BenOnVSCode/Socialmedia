@@ -38,7 +38,7 @@ mongoose.connect(process.env.DATABASE_URL, { useNewUrlParser: true, useUnifiedTo
 
 app.use(express.static('client/build'))
 app.get('*', (req, res) => {
-    res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'))
+    res.sendFile(path.resolve(path.dirname(new URL(import.meta.url).pathname), 'client', 'build', 'index.html'))
 })
 
 
